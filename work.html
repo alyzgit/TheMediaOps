@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Work — The Media Ops</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #080a0f; --surface: #0e1118; --surface2: #141820;
+      --border: rgba(255,255,255,0.07); --accent: #4068FD; --accent2: #6b8ffe;
+      --text: #e8eaf0; --muted: #6b7080;
+      --font-display: 'Bebas Neue', sans-serif; --font-body: 'DM Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 4rem;
+      background: rgba(8,10,15,0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.05em; color: var(--text); text-decoration: none; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 0.85rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-cta { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--accent); padding: 0.55rem 1.4rem; text-decoration: none; transition: opacity 0.2s;  }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 12rem 4rem 6rem;
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .page-header-bg {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(64,104,253,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(64,104,253,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 100% 100% at 0% 0%, black 20%, transparent 80%);
+    }
+    .page-header-content { position: relative; z-index: 1; }
+    .section-label { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; }
+    .section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+    .page-title { font-family: var(--font-display); font-size: clamp(4rem, 8vw, 7rem); line-height: 0.95; letter-spacing: 0.02em; color: var(--text); margin-bottom: 1.5rem; }
+    .page-sub { font-size: 1.05rem; color: var(--muted); max-width: 500px; line-height: 1.75; font-weight: 300; }
+
+    /* FILTER */
+    .filter-bar {
+      padding: 2rem 4rem;
+      display: flex; align-items: center; gap: 1rem;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+    }
+    .filter-btn {
+      font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.5rem 1.2rem;
+      border: 1px solid var(--border);
+      background: transparent; color: var(--muted);
+      cursor: pointer; transition: all 0.2s; white-space: nowrap;
+      font-family: var(--font-body);
+    }
+    .filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); }
+
+    /* WORK GRID */
+    .work-section { padding: 4rem; }
+    .work-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+    .work-card {
+      background: var(--surface); padding: 3rem;
+      display: flex; flex-direction: column; gap: 1.5rem;
+      transition: background 0.25s;
+      cursor: default;
+    }
+    .work-card:hover { background: var(--surface2); }
+    .work-card.featured { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+    .work-tag {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
+    }
+    .work-tag::before { content: ''; width: 16px; height: 1px; background: var(--accent); }
+    .work-num {
+      font-family: var(--font-display);
+      font-size: 4rem; color: rgba(64,104,253,0.12);
+      letter-spacing: 0.02em; line-height: 1;
+    }
+    .work-title {
+      font-family: var(--font-display);
+      font-size: 2rem; letter-spacing: 0.03em; color: var(--text); line-height: 1.05;
+    }
+    .work-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+    .work-meta { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: auto; }
+    .work-pill {
+      font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border: 1px solid var(--border); color: var(--muted);
+    }
+    .work-visual {
+      aspect-ratio: 16/9;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .work-visual-inner {
+      display: flex; flex-direction: column; align-items: center; gap: 1rem;
+      opacity: 0.4;
+    }
+    .work-visual-icon { font-size: 2.5rem; color: var(--accent); }
+    .work-visual-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+    .work-visual::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(45deg, rgba(64,104,253,0.015) 0px, rgba(64,104,253,0.015) 1px, transparent 1px, transparent 14px);
+    }
+
+    /* PROCESS */
+    .process-section {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 6rem 4rem;
+    }
+    .process-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+      margin-top: 4rem;
+    }
+    .process-step {
+      padding: 2rem;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .process-step:last-child { border-right: none; }
+    .process-step::before {
+      content: '';
+      position: absolute; top: 0; left: 2rem; width: 30px; height: 2px;
+      background: var(--border);
+    }
+    .process-step.first::before { background: var(--accent); }
+    .step-num {
+      font-family: var(--font-display); font-size: 3rem;
+      color: rgba(255,255,255,0.06); line-height: 1; margin-bottom: 1rem;
+    }
+    .step-name {
+      font-family: var(--font-display); font-size: 1.4rem;
+      letter-spacing: 0.04em; color: var(--text); margin-bottom: 0.75rem;
+    }
+    .step-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+    /* CTA STRIP */
+    .cta-strip { background: var(--accent); padding: 4rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+    .cta-strip h2 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.2rem); color: var(--bg); letter-spacing: 0.02em; }
+    .cta-strip p { font-size: 0.95rem; color: rgba(8,10,15,0.65); margin-top: 0.3rem; }
+    .btn-dark { display: inline-block; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--bg); padding: 0.9rem 2.2rem; text-decoration: none; white-space: nowrap; transition: opacity 0.2s; }
+    .btn-dark:hover { opacity: 0.85; }
+
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 3rem 4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-logo { font-family: var(--font-display); font-size: 1.3rem; color: var(--text); }
+    .footer-logo span { color: var(--accent); }
+    .footer-links { display: flex; gap: 2rem; list-style: none; }
+    .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1.25rem 1.5rem; } .nav-links { display: none; }
+      .page-header { padding: 9rem 1.5rem 4rem; }
+      .filter-bar { padding: 1.5rem; }
+      .work-section { padding: 2rem 1.5rem; }
+      .work-grid { grid-template-columns: 1fr; }
+      .work-card.featured { grid-column: 1; grid-template-columns: 1fr; }
+      .process-section { padding: 5rem 1.5rem; }
+      .process-grid { grid-template-columns: 1fr 1fr; }
+      .process-step { border-right: none; border-bottom: 1px solid var(--border); }
+      .cta-strip { padding: 3rem 1.5rem; }
+      footer { padding: 2.5rem 1.5rem; flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">THE MEDIA<span>OPS</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html" class="active">Work</a></li>
+      <li><a href="partners.html">Partners</a></li>
+    </ul>
+    <a href="partners.html#contact" class="nav-cta">Get in Touch</a>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-header-bg"></div>
+    <div class="page-header-content">
+      <div class="section-label">Portfolio</div>
+      <h1 class="page-title">OUR WORK</h1>
+      <p class="page-sub">Infrastructure projects delivered across broadcast, digital media, and enterprise IT environments.</p>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Network</button>
+    <button class="filter-btn">Cloud</button>
+    <button class="filter-btn">Security</button>
+    <button class="filter-btn">Broadcast</button>
+    <button class="filter-btn">Managed IT</button>
+  </div>
+
+  <div class="work-section">
+    <div class="work-grid">
+
+      <!-- Featured Project -->
+      <div class="work-card featured">
+        <div>
+          <div class="work-tag">Featured Project</div>
+          <div class="work-num">01</div>
+          <h2 class="work-title">NATIONAL BROADCAST NETWORK OVERHAUL</h2>
+          <p class="work-desc">End-to-end redesign of the internal network infrastructure for a national broadcast station. Replaced aging legacy hardware with a fully redundant, high-availability backbone capable of handling simultaneous live feeds across 12 channels. Deployment completed within a 48-hour maintenance window with zero broadcast disruption.</p>
+          <div class="work-meta">
+            <span class="work-pill">Network Architecture</span>
+            <span class="work-pill">Redundancy Design</span>
+            <span class="work-pill">48hr Deployment</span>
+          </div>
+        </div>
+        <div class="work-visual">
+          <div class="work-visual-inner">
+            <div class="work-visual-icon">◈</div>
+            <div class="work-visual-label">Network Topology</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-card">
+        <div class="work-tag">Cloud Infrastructure</div>
+        <div class="work-num">02</div>
+        <h2 class="work-title">HYBRID CLOUD MIGRATION FOR MEDIA STUDIO</h2>
+        <p class="work-desc">Migrated a regional media production studio from on-premise servers to a hybrid cloud model, reducing infrastructure costs by 40% while improving remote access for distributed production teams.</p>
+        <div class="work-meta">
+          <span class="work-pill">Cloud Migration</span>
+          <span class="work-pill">Hybrid Architecture</span>
+          <span class="work-pill">Cost Optimization</span>
+        </div>
+      </div>
+
+      <div class="work-card">
+        <div class="work-tag">Cybersecurity</div>
+        <div class="work-num">03</div>
+        <h2 class="work-title">MEDIA ASSET SECURITY HARDENING</h2>
+        <p class="work-desc">Full security audit and hardening for a content distribution company managing over 100TB of proprietary media assets. Implemented zero-trust access controls, encrypted data pipelines, and real-time threat detection.</p>
+        <div class="work-meta">
+          <span class="work-pill">Zero Trust</span>
+          <span class="work-pill">Encryption</span>
+          <span class="work-pill">Threat Monitoring</span>
+        </div>
+      </div>
+
+      <div class="work-card">
+        <div class="work-tag">Managed IT</div>
+        <div class="work-num">04</div>
+        <h2 class="work-title">24/7 OPERATIONS SUPPORT — DIGITAL PUBLISHER</h2>
+        <p class="work-desc">Ongoing managed IT support for a high-traffic digital news publisher. Includes proactive monitoring, incident response with under-15-minute SLA, and quarterly infrastructure health reviews.</p>
+        <div class="work-meta">
+          <span class="work-pill">Managed Services</span>
+          <span class="work-pill">24/7 Monitoring</span>
+          <span class="work-pill">SLA &lt;15min</span>
+        </div>
+      </div>
+
+      <div class="work-card">
+        <div class="work-tag">Broadcast Technology</div>
+        <div class="work-num">05</div>
+        <h2 class="work-title">LIVE STREAMING INFRASTRUCTURE SCALE-UP</h2>
+        <p class="work-desc">Designed and deployed a scalable live streaming infrastructure for a sports media company during peak-demand events, handling over 200,000 concurrent viewers with sub-second latency.</p>
+        <div class="work-meta">
+          <span class="work-pill">Live Streaming</span>
+          <span class="work-pill">CDN Integration</span>
+          <span class="work-pill">Load Balancing</span>
+        </div>
+      </div>
+
+      <div class="work-card">
+        <div class="work-tag">Systems Integration</div>
+        <div class="work-num">06</div>
+        <h2 class="work-title">MULTI-PLATFORM CONTENT WORKFLOW INTEGRATION</h2>
+        <p class="work-desc">Integrated a fragmented suite of editorial, storage, and publishing tools into a unified content workflow for a multi-brand media group, cutting content delivery time by 60%.</p>
+        <div class="work-meta">
+          <span class="work-pill">API Integration</span>
+          <span class="work-pill">Workflow Automation</span>
+          <span class="work-pill">Multi-platform</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PROCESS -->
+  <div class="process-section">
+    <div class="section-label">How We Work</div>
+    <h2 class="page-title" style="font-size: clamp(2.5rem,5vw,4rem);">OUR PROCESS</h2>
+    <div class="process-grid">
+      <div class="process-step first">
+        <div class="step-num">01</div>
+        <div class="step-name">DISCOVERY</div>
+        <p class="step-desc">We audit your current infrastructure, understand your operational needs, and map out the gaps before touching anything.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <div class="step-name">DESIGN</div>
+        <p class="step-desc">A tailored architecture plan is built around your specific environment — no off-the-shelf solutions.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <div class="step-name">DEPLOY</div>
+        <p class="step-desc">Rapid, precision deployment with minimal disruption. We work within your operational windows.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">04</div>
+        <div class="step-name">MONITOR</div>
+        <p class="step-desc">Ongoing support and proactive monitoring keeps everything running — we're always watching so you don't have to.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-strip">
+    <div>
+      <h2>HAVE A PROJECT IN MIND?</h2>
+      <p>We'd love to hear about your infrastructure challenges.</p>
+    </div>
+    <a href="partners.html#contact" class="btn-dark">Let's Talk</a>
+  </div>
+
+  <footer>
+    <div class="footer-logo">THE MEDIA<span>OPS</span></div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html">Work</a></li>
+      <li><a href="partners.html">Partners</a></li>
+    </ul>
+    <span class="footer-copy">© 2025 The Media Ops. All rights reserved.</span>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

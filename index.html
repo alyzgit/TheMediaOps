@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Media Ops — IT Infrastructure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #080a0f;
+      --surface: #0e1118;
+      --surface2: #141820;
+      --border: rgba(255,255,255,0.07);
+      --accent: #4068FD;
+      --accent2: #6b8ffe;
+      --text: #e8eaf0;
+      --muted: #6b7080;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 4rem;
+      background: rgba(8,10,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-cta { 
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--accent);
+      padding: 0.55rem 1.4rem;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 8rem 4rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(64,104,253,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(64,104,253,0.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 100%);
+    }
+    .hero-glow {
+      position: absolute;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(64,104,253,0.08) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%, -60%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 900px; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+    .hero-tag::before {
+      content: '';
+      display: block; width: 28px; height: 1px;
+      background: var(--accent);
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 9vw, 8rem);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      margin-bottom: 2rem;
+    }
+    .hero-title em { color: var(--accent); font-style: normal; }
+    .hero-sub {
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 3rem;
+      line-height: 1.75;
+    }
+    .hero-actions { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--accent);
+      padding: 0.85rem 2.2rem;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.1rem;
+      transition: border-color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--text); }
+    .hero-stats {
+      position: absolute; right: 4rem; bottom: 5rem;
+      display: flex; flex-direction: column; gap: 2rem;
+    }
+    .stat-item { text-align: right; }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      line-height: 1;
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+    /* MARQUEE */
+    .marquee-section {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.1rem 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .marquee-track {
+      display: flex; gap: 4rem;
+      white-space: nowrap;
+      animation: marquee 22s linear infinite;
+    }
+    .marquee-item {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex; align-items: center; gap: 1rem;
+      flex-shrink: 0;
+    }
+    .marquee-item::before { content: '●'; color: var(--accent); font-size: 0.4rem; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* SECTIONS */
+    section { padding: 7rem 4rem; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+    .section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      line-height: 1;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+
+    /* SERVICES */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      margin-top: 4rem;
+      border: 1px solid var(--border);
+    }
+    .service-card {
+      background: var(--surface);
+      padding: 2.5rem;
+      transition: background 0.25s;
+      cursor: default;
+      text-align: center;
+    }
+    .service-card:hover { background: var(--surface2); }
+    .service-icon {
+      width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.25rem;
+      color: var(--accent);
+    }
+    .service-icon svg {
+      width: 40px; height: 40px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .service-name {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+    .service-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+
+    /* WHY US */
+    .why-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+      margin-top: 3rem;
+    }
+    .why-text p { font-size: 1rem; color: var(--muted); line-height: 1.85; margin-bottom: 1.5rem; }
+    .why-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+    .why-list li {
+      display: flex; align-items: flex-start; gap: 1rem;
+      font-size: 0.9rem; color: var(--text); line-height: 1.6;
+    }
+    .why-list li::before {
+      content: '→';
+      color: var(--accent);
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .why-visual {
+      position: relative;
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      background: var(--surface);
+    }
+    .why-visual::before {
+      content: '';
+      position: absolute; top: -1px; left: 0; width: 60px; height: 2px;
+      background: var(--accent);
+    }
+    .metric-row { display: flex; flex-direction: column; gap: 1.5rem; }
+    .metric {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .metric:last-child { border-bottom: none; padding-bottom: 0; }
+    .metric-label { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .metric-val {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      letter-spacing: 0.03em;
+      color: var(--text);
+    }
+    .metric-val span { color: var(--accent); }
+
+    /* CTA STRIP */
+    .cta-strip {
+      background: var(--accent);
+      padding: 4rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .cta-strip-text h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      color: var(--bg);
+      letter-spacing: 0.02em;
+    }
+    .cta-strip-text p { font-size: 0.95rem; color: rgba(8,10,15,0.65); margin-top: 0.3rem; }
+    .btn-dark {
+      display: inline-block;
+      font-size: 0.85rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent);
+      background: var(--bg);
+      padding: 0.9rem 2.2rem;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+    .btn-dark:hover { opacity: 0.85; }
+
+    /* FOOTER */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 3rem 4rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;
+    }
+    .footer-logo { font-family: var(--font-display); font-size: 1.3rem; color: var(--text); }
+    .footer-logo span { color: var(--accent); }
+    .footer-links { display: flex; gap: 2rem; list-style: none; }
+    .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1.25rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 6rem 1.5rem 12rem; }
+      .hero-stats { right: 1.5rem; bottom: 3rem; }
+      section { padding: 5rem 1.5rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .why-row { grid-template-columns: 1fr; gap: 3rem; }
+      .cta-strip { padding: 3rem 1.5rem; }
+      footer { padding: 2.5rem 1.5rem; flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">THE MEDIA<span>OPS</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="work.html">Work</a></li>
+      <li><a href="partners.html">Partners</a></li>
+    </ul>
+    <a href="partners.html#contact" class="nav-cta">Get in Touch</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="hero-tag">IT Infrastructure &amp; Media Operations</div>
+      <h1 class="hero-title">
+        BUILDING THE<br />
+        BACKBONE OF<br />
+        <em>DIGITAL MEDIA</em>
+      </h1>
+      <p class="hero-sub">
+        We engineer the infrastructure that powers media — from network architecture to systems integration, keeping operations fast, secure, and resilient.
+      </p>
+      <div class="hero-actions">
+        <a href="work.html" class="btn-primary">View Our Work</a>
+        <a href="partners.html" class="btn-ghost">Our Partners →</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">99<span>.9%</span></div>
+        <div class="stat-label">Uptime Delivered</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">50<span>+</span></div>
+        <div class="stat-label">Projects Completed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">12<span>+</span></div>
+        <div class="stat-label">Partners &amp; Clients</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <span class="marquee-item">Network Architecture</span>
+      <span class="marquee-item">Systems Integration</span>
+      <span class="marquee-item">Cloud Infrastructure</span>
+      <span class="marquee-item">Cybersecurity</span>
+      <span class="marquee-item">Media Server Setup</span>
+      <span class="marquee-item">Broadcast Technology</span>
+      <span class="marquee-item">Data Center Ops</span>
+      <span class="marquee-item">24/7 Monitoring</span>
+      <span class="marquee-item">Network Architecture</span>
+      <span class="marquee-item">Systems Integration</span>
+      <span class="marquee-item">Cloud Infrastructure</span>
+      <span class="marquee-item">Cybersecurity</span>
+      <span class="marquee-item">Media Server Setup</span>
+      <span class="marquee-item">Broadcast Technology</span>
+      <span class="marquee-item">Data Center Ops</span>
+      <span class="marquee-item">24/7 Monitoring</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section>
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">CORE SERVICES</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <!-- Network Architecture: interconnected nodes -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v4M12 11l-5.5 6M12 11l5.5 6"/><path d="M7 19h10"/></svg>
+        </div>
+        <div class="service-name">Network Architecture</div>
+        <p class="service-desc">Designing and deploying high-performance network infrastructure built for reliability, speed, and future scalability across media environments.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <!-- Systems Integration: linked puzzle pieces / layers -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="8" height="6" rx="1"/><rect x="14" y="3" width="8" height="6" rx="1"/><rect x="2" y="15" width="8" height="6" rx="1"/><rect x="14" y="15" width="8" height="6" rx="1"/><path d="M10 6h4M10 18h4M6 9v6M18 9v6"/></svg>
+        </div>
+        <div class="service-name">Systems Integration</div>
+        <p class="service-desc">Connecting disparate platforms and hardware into cohesive, seamless ecosystems — from broadcast suites to cloud-based production pipelines.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <!-- Cloud & Data Centers: cloud with upload arrow -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 19H9a4 4 0 1 1 .84-7.9A5 5 0 1 1 17.5 19z"/><path d="M12 13v5M9.5 15.5 12 13l2.5 2.5"/></svg>
+        </div>
+        <div class="service-name">Cloud &amp; Data Centers</div>
+        <p class="service-desc">Architecting cloud-first or hybrid infrastructure solutions with full data center management, backup, and disaster recovery capabilities.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <!-- Cybersecurity: shield with checkmark -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4v5c0 4.5-3.5 8.7-8 10-4.5-1.3-8-5.5-8-10V7l8-4z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div class="service-name">Cybersecurity</div>
+        <p class="service-desc">Protecting critical media assets with end-to-end security audits, firewall deployment, and real-time threat monitoring tailored to media ops.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <!-- Media Server: server stack with play indicator -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="5" rx="1"/><rect x="2" y="10" width="20" height="5" rx="1"/><rect x="2" y="17" width="20" height="4" rx="1"/><circle cx="6" cy="5.5" r="0.8" fill="currentColor" stroke="none"/><circle cx="6" cy="12.5" r="0.8" fill="currentColor" stroke="none"/><path d="M16 5.5h3M16 12.5h3"/></svg>
+        </div>
+        <div class="service-name">Media Server Setup</div>
+        <p class="service-desc">Configuring and optimizing media servers for storage, streaming, and content delivery — ensuring zero-latency performance on air.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <!-- Managed IT Support: headset / 24-7 monitor -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11a9 9 0 1 1 18 0"/><path d="M3 11v3a2 2 0 0 0 2 2h1a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1H3z"/><path d="M21 11v3a2 2 0 0 1-2 2h-1a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h3z"/><path d="M19 16v1a2 2 0 0 1-2 2h-2"/></svg>
+        </div>
+        <div class="service-name">Managed IT Support</div>
+        <p class="service-desc">24/7 monitoring, helpdesk support, and proactive maintenance so your operations never stop — even when problems arise.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="section-label">Why Us</div>
+    <h2 class="section-title">BUILT FOR MEDIA,<br />ENGINEERED TO LAST</h2>
+    <div class="why-row">
+      <div class="why-text">
+        <p>Media operations run on tight deadlines, live broadcasts, and unforgiving uptime requirements. Generic IT firms don't understand that. We do — because we built our practice specifically for media environments.</p>
+        <ul class="why-list">
+          <li>Deep expertise in broadcast and media-grade infrastructure</li>
+          <li>Rapid deployment with minimal disruption to live operations</li>
+          <li>Proactive monitoring before issues become outages</li>
+          <li>Vendor-agnostic advice — we recommend what's right, not what's expensive</li>
+          <li>Scalable solutions that grow with your organization</li>
+        </ul>
+      </div>
+      <div class="why-visual">
+        <div class="metric-row">
+          <div class="metric">
+            <span class="metric-label">Average Deployment Time</span>
+            <span class="metric-val">72<span>hrs</span></span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Infrastructure Uptime</span>
+            <span class="metric-val">99<span>.9%</span></span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Client Retention Rate</span>
+            <span class="metric-val">95<span>%</span></span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Years in Operation</span>
+            <span class="metric-val">5<span>+</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-strip">
+    <div class="cta-strip-text">
+      <h2>READY TO BUILD SOMETHING SOLID?</h2>
+      <p>Let's talk infrastructure. No jargon, just solutions.</p>
+    </div>
+    <a href="partners.html#contact" class="btn-dark">Start a Conversation</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">THE MEDIA<span>OPS</span></div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html">Work</a></li>
+      <li><a href="partners.html">Partners</a></li>
+    </ul>
+    <span class="footer-copy">© 2025 The Media Ops. All rights reserved.</span>
+  </footer>
+
+</body>
+</html>
