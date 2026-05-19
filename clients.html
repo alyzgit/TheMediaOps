@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clients — The Media Ops</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #080a0f; --surface: #0e1118; --surface2: #141820;
+      --border: rgba(255,255,255,0.07); --accent: #4068FD; --accent2: #6b8ffe;
+      --text: #e8eaf0; --muted: #6b7080;
+      --font-display: 'Bebas Neue', sans-serif; --font-body: 'DM Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 4rem; background: rgba(8,10,15,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.05em; color: var(--text); text-decoration: none; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 0.85rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-cta { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--accent); padding: 0.55rem 1.4rem; text-decoration: none; transition: opacity 0.2s; }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* PAGE HEADER */
+    .page-header { padding: 12rem 4rem 6rem; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-header-bg {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(64,104,253,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(64,104,253,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 100% 100% at 50% 0%, black 20%, transparent 80%);
+    }
+    .page-header-content { position: relative; z-index: 1; }
+    .section-label { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; }
+    .section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+    .page-title { font-family: var(--font-display); font-size: clamp(4rem, 8vw, 7rem); line-height: 0.95; letter-spacing: 0.02em; color: var(--text); margin-bottom: 1.5rem; }
+    .page-sub { font-size: 1.05rem; color: var(--muted); max-width: 520px; line-height: 1.75; font-weight: 300; }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-block {
+      padding: 2.5rem 4rem;
+      border-right: 1px solid var(--border);
+    }
+    .stat-block:last-child { border-right: none; }
+    .stat-num { font-family: var(--font-display); font-size: 3rem; letter-spacing: 0.02em; color: var(--text); line-height: 1; }
+    .stat-num span { color: var(--accent); }
+    .stat-label { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 0.3rem; }
+
+    /* FILTER */
+    .filter-bar {
+      padding: 2rem 4rem;
+      display: flex; align-items: center; gap: 1rem;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+    }
+    .filter-label { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-right: 0.5rem; flex-shrink: 0; }
+    .filter-btn {
+      font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.5rem 1.2rem;
+      border: 1px solid var(--border);
+      background: transparent; color: var(--muted);
+      cursor: pointer; transition: all 0.2s; white-space: nowrap;
+      font-family: var(--font-body);
+    }
+    .filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); }
+
+    /* CLIENTS GRID */
+    .clients-section { padding: 5rem 4rem; }
+    .clients-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+
+    .client-card {
+      background: var(--surface);
+      display: grid; grid-template-columns: 220px 1fr;
+      transition: background 0.25s;
+      cursor: default;
+      min-height: 180px;
+    }
+    .client-card:hover { background: var(--surface2); }
+
+    /* Logo panel */
+    .client-logo-panel {
+      border-right: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem;
+      background: var(--surface2);
+      position: relative;
+      overflow: hidden;
+    }
+    .client-logo-panel::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(45deg, rgba(64,104,253,0.015) 0px, rgba(64,104,253,0.015) 1px, transparent 1px, transparent 14px);
+    }
+
+    /* ─── CLIENT LOGO: how to add your image ────────────────────────────
+       Replace the placeholder <span> inside .client-logo-panel with:
+         <img src="assets/images/logo-clientname.png" alt="Client Name" class="client-logo-img" />
+
+       Tips:
+         • PNG with transparent background works best
+         • White or light logos look great on the dark panel
+         • The CSS filter below makes any logo appear white automatically
+         • Remove filter: brightness(0) invert(1) if your logo is already white/light
+    ──────────────────────────────────────────────────────────────────── */
+    .client-logo-img {
+      max-width: 140px; max-height: 60px;
+      width: auto; height: auto;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.7;
+      transition: opacity 0.2s;
+      position: relative; z-index: 1;
+    }
+    .client-card:hover .client-logo-img { opacity: 1; }
+    .client-logo-placeholder {
+      font-family: var(--font-display);
+      font-size: 1rem; letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.15);
+      text-align: center;
+      position: relative; z-index: 1;
+    }
+
+    /* Info panel */
+    .client-info { padding: 2rem 2.5rem; display: flex; flex-direction: column; gap: 0.75rem; justify-content: center; }
+    .client-industry {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
+    }
+    .client-industry::before { content: ''; width: 14px; height: 1px; background: var(--accent); }
+    .client-name { font-family: var(--font-display); font-size: 1.6rem; letter-spacing: 0.03em; color: var(--text); line-height: 1.05; }
+    .client-project { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+    .client-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.25rem; }
+    .client-tag {
+      font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.25rem 0.7rem;
+      border: 1px solid var(--border); color: var(--muted);
+    }
+
+    /* FEATURED CLIENT — full width card */
+    .client-card.featured {
+      grid-column: span 2;
+      grid-template-columns: 280px 1fr;
+      min-height: 220px;
+    }
+    .client-card.featured .client-logo-panel { min-height: 220px; }
+    .client-card.featured .client-name { font-size: 2rem; }
+    .client-card.featured .client-project { font-size: 0.95rem; max-width: 560px; }
+
+    /* EMPTY SLOT */
+    .client-card.add-slot {
+      background: transparent;
+      border: 1px dashed rgba(64,104,253,0.2);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 0.5rem;
+      padding: 3rem;
+      grid-template-columns: unset;
+      min-height: 180px;
+      cursor: default;
+    }
+    .add-slot-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+    .add-slot-sub { font-size: 0.82rem; color: var(--muted); }
+
+    /* CTA STRIP */
+    .cta-strip { background: var(--accent); padding: 4rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+    .cta-strip h2 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.2rem); color: #fff; letter-spacing: 0.02em; }
+    .cta-strip p { font-size: 0.95rem; color: rgba(255,255,255,0.65); margin-top: 0.3rem; }
+    .btn-dark { display: inline-block; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: var(--bg); padding: 0.9rem 2.2rem; text-decoration: none; white-space: nowrap; transition: opacity 0.2s; }
+    .btn-dark:hover { opacity: 0.85; }
+
+    /* FOOTER */
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 3rem 4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-logo { font-family: var(--font-display); font-size: 1.3rem; color: var(--text); }
+    .footer-logo span { color: var(--accent); }
+    .footer-links { display: flex; gap: 2rem; list-style: none; }
+    .footer-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+
+    @media (max-width: 1024px) {
+      .clients-grid { grid-template-columns: 1fr; }
+      .client-card.featured { grid-column: 1; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .stat-block:nth-child(2) { border-right: none; }
+      .stat-block:nth-child(3) { border-top: 1px solid var(--border); }
+    }
+    @media (max-width: 700px) {
+      nav { padding: 1.25rem 1.5rem; } .nav-links { display: none; }
+      .page-header { padding: 9rem 1.5rem 4rem; }
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+      .filter-bar { padding: 1.5rem; }
+      .clients-section { padding: 3rem 1.5rem; }
+      .client-card, .client-card.featured { grid-template-columns: 1fr; min-height: unset; }
+      .client-logo-panel { min-height: 120px; border-right: none; border-bottom: 1px solid var(--border); }
+      .client-card.featured .client-logo-panel { min-height: 120px; }
+      .cta-strip { padding: 3rem 1.5rem; }
+      footer { padding: 2.5rem 1.5rem; flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">THE MEDIA<span>OPS</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html">Work</a></li>
+      <li><a href="clients.html" class="active">Clients</a></li>
+      <li><a href="partners.html">Partners</a></li>
+    </ul>
+    <a href="partners.html#contact" class="nav-cta">Get in Touch</a>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-header-bg"></div>
+    <div class="page-header-content">
+      <div class="section-label">Who We've Worked With</div>
+      <h1 class="page-title">OUR CLIENTS</h1>
+      <p class="page-sub">Organizations that trusted us to build, secure, and maintain their critical media and IT infrastructure.</p>
+    </div>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-block">
+      <div class="stat-num">12<span>+</span></div>
+      <div class="stat-label">Clients Served</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num">4</div>
+      <div class="stat-label">Industries</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num">99<span>.9%</span></div>
+      <div class="stat-label">Avg. Uptime Delivered</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num">95<span>%</span></div>
+      <div class="stat-label">Client Retention Rate</div>
+    </div>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-bar">
+    <span class="filter-label">Filter by</span>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="broadcast">Broadcast</button>
+    <button class="filter-btn" data-filter="digital-media">Digital Media</button>
+    <button class="filter-btn" data-filter="enterprise">Enterprise IT</button>
+    <button class="filter-btn" data-filter="production">Production</button>
+  </div>
+
+  <!-- CLIENTS -->
+  <section class="clients-section">
+    <div class="clients-grid">
+
+      <!-- FEATURED CLIENT -->
+      <div class="client-card featured" data-category="broadcast">
+        <div class="client-logo-panel">
+          <!-- ↓ REPLACE with: <img src="assets/images/logo-clientname.png" alt="Client Name" class="client-logo-img" /> -->
+          <span class="client-logo-placeholder">CLIENT LOGO</span>
+        </div>
+        <div class="client-info">
+          <span class="client-industry">Broadcast</span>
+          <div class="client-name">YOUR FEATURED CLIENT</div>
+          <p class="client-project">Describe the main project you did for this client. What was the challenge, what did you build or fix, and what was the outcome? Keep it to 2–3 sentences — specific and results-focused. For example: "Redesigned their entire broadcast network infrastructure, enabling 12 simultaneous live feeds with zero downtime during a 48-hour deployment window."</p>
+          <div class="client-tags">
+            <span class="client-tag">Network Architecture</span>
+            <span class="client-tag">Live Broadcast</span>
+            <span class="client-tag">48hr Deployment</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CLIENT 2 -->
+      <div class="client-card" data-category="digital-media">
+        <div class="client-logo-panel">
+          <!-- ↓ REPLACE with: <img src="assets/images/logo-clientname.png" alt="Client Name" class="client-logo-img" /> -->
+          <span class="client-logo-placeholder">CLIENT LOGO</span>
+        </div>
+        <div class="client-info">
+          <span class="client-industry">Digital Media</span>
+          <div class="client-name">CLIENT NAME B</div>
+          <p class="client-project">Describe what you did for this client in 2–3 sentences. Focus on the result — uptime improved, costs reduced, systems integrated, etc.</p>
+          <div class="client-tags">
+            <span class="client-tag">Cloud Migration</span>
+            <span class="client-tag">Hybrid Infrastructure</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CLIENT 3 -->
+      <div class="client-card" data-category="enterprise">
+        <div class="client-logo-panel">
+          <!-- ↓ REPLACE with: <img src="assets/images/logo-clientname.png" alt="Client Name" class="client-logo-img" /> -->
+          <span class="client-logo-placeholder">CLIENT LOGO</span>
+        </div>
+        <div class="client-info">
+          <span class="client-industry">Enterprise IT</span>
+          <div class="client-name">CLIENT NAME C</div>
+          <p class="client-project">Describe what you did for this client in 2–3 sentences. Focus on the result — uptime improved, costs reduced, systems integrated, etc.</p>
+          <div class="client-tags">
+            <span class="client-tag">Cybersecurity</span>
+            <span class="client-tag">Zero Trust</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CLIENT 4 -->
+      <div class="client-card" data-category="production">
+        <div class="client-logo-panel">
+          <!-- ↓ REPLACE with: <img src="assets/images/logo-clientname.png" alt="Client Name" class="client-logo-img" /> -->
+          <span class="client-logo-placeholder">CLIENT LOGO</span>
+        </div>
+        <div class="client-info">
+          <span class="client-industry">Production</span>
+          <div class="client-name">CLIENT NAME D</div>
+          <p class="client-project">Describe what you did for this client in 2–3 sentences. Focus on the result — uptime improved, costs reduced, systems integrated, etc.</p>
+          <div class="client-tags">
+            <span class="client-tag">Media Servers</span>
+            <span class="client-tag">Systems Integration</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CLIENT 5 -->
+      <div class="client-card" data-category="broadcast">
+        <div class="client-logo-panel">
+          <!-- ↓ REPLACE with: <img src="assets/images/logo-clientname.png" alt="Client Name" class="client-logo-img" /> -->
+          <span class="client-logo-placeholder">CLIENT LOGO</span>
+        </div>
+        <div class="client-info">
+          <span class="client-industry">Broadcast</span>
+          <div class="client-name">CLIENT NAME E</div>
+          <p class="client-project">Describe what you did for this client in 2–3 sentences. Focus on the result — uptime improved, costs reduced, systems integrated, etc.</p>
+          <div class="client-tags">
+            <span class="client-tag">Live Streaming</span>
+            <span class="client-tag">CDN Integration</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADD MORE SLOT -->
+      <div class="client-card add-slot">
+        <span class="add-slot-label">More coming soon</span>
+        <span class="add-slot-sub">Duplicate any card above to add a new client</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-strip">
+    <div>
+      <h2>READY TO JOIN THIS LIST?</h2>
+      <p>Let's talk about what we can build for your organization.</p>
+    </div>
+    <a href="partners.html#contact" class="btn-dark">Get in Touch</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">THE MEDIA<span>OPS</span></div>
+    <ul class="footer-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="work.html">Work</a></li>
+      <li><a href="clients.html">Clients</a></li>
+      <li><a href="partners.html">Partners</a></li>
+    </ul>
+    <span class="footer-copy">© 2025 The Media Ops. All rights reserved.</span>
+  </footer>
+
+  <script>
+    // Filter functionality
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.client-card:not(.add-slot)');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        cards.forEach(card => {
+          const match = filter === 'all' || card.dataset.category === filter;
+          card.style.display = match ? '' : 'none';
+          // featured card spans 2 cols — reset on hide
+          if (card.classList.contains('featured')) {
+            card.style.gridColumn = match ? 'span 2' : 'none';
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

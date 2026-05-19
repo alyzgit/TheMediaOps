@@ -46,7 +46,7 @@
     }
     .partner-card:hover { background: var(--surface2); }
     .partner-logo-area {
-      width: 100%; height: 200px;
+      width: 100%; height: 72px;
       border: 1px solid var(--border);
       display: flex; align-items: center; justify-content: center;
       overflow: hidden;
@@ -67,11 +67,11 @@
          • Max recommended size: 180×60px
     ──────────────────────────────────────────────────────────────────── */
     .partner-logo-img {
-      max-width: 320px;
-      max-height: 160px;
+      max-width: 160px;
+      max-height: 52px;
       width: auto; height: auto;
       object-fit: contain;
-     /* filter: brightness(0) invert(1);   /* makes any logo white — remove this line if your logo is already white/light */ 
+      filter: brightness(0) invert(1);   /* makes any logo white — remove this line if your logo is already white/light */
       opacity: 0.75;
       transition: opacity 0.2s;
     }
@@ -165,6 +165,7 @@
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="work.html">Work</a></li>
+      <li><a href="clients.html">Clients</a></li>
       <li><a href="partners.html" class="active">Partners</a></li>
     </ul>
     <a href="#contact" class="nav-cta">Get in Touch</a>
@@ -189,30 +190,30 @@
       <div class="partner-card">
         <div class="partner-logo-area">
           <!-- ↓ REPLACE THIS with: <img src="partner-a-logo.png" alt="Partner A Name" class="partner-logo-img" /> -->
-          <img src="Assets/Elmonteg-Logo.png" alt="Partner A" class="partner-logo-img" />
+          <span class="partner-logo-placeholder">PARTNER A LOGO</span>
         </div>
         <div class="partner-type">Network Infrastructure</div>
-        <div class="partner-name">Elmonteg Media Solutions</div>
+        <div class="partner-name">YOUR PARTNER A</div>
         <p class="partner-desc">Add your network infrastructure partner here. Describe what they provide and why you chose to work with them.</p>
       </div>
 
       <div class="partner-card">
         <div class="partner-logo-area">
           <!-- ↓ REPLACE THIS with: <img src="partner-b-logo.png" alt="Partner B Name" class="partner-logo-img" /> -->
-          <img src="Assets/ShiftW_Logo.png" alt="Partner B" class="partner-logo-img" />
+          <span class="partner-logo-placeholder">PARTNER B LOGO</span>
         </div>
         <div class="partner-type">Cloud Services</div>
-        <div class="partner-name">Shift Studios</div>
+        <div class="partner-name">YOUR PARTNER B</div>
         <p class="partner-desc">Add your cloud services partner here. A few sentences about the relationship and what value it brings to clients.</p>
       </div>
 
       <div class="partner-card">
         <div class="partner-logo-area">
           <!-- ↓ REPLACE THIS with: <img src="partner-c-logo.png" alt="Partner C Name" class="partner-logo-img" /> -->
-          <img src="Assets/MarvellousW-Logo.png" alt="Partner C" class="partner-logo-img" />
+          <span class="partner-logo-placeholder">PARTNER C LOGO</span>
         </div>
         <div class="partner-type">Cybersecurity</div>
-        <div class="partner-name">Marvellous Studios</div>
+        <div class="partner-name">YOUR PARTNER C</div>
         <p class="partner-desc">Add your cybersecurity vendor or partner here. Describe how this partnership strengthens your security offerings.</p>
       </div>
 
@@ -359,6 +360,7 @@
     <ul class="footer-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="work.html">Work</a></li>
+      <li><a href="clients.html">Clients</a></li>
       <li><a href="partners.html">Partners</a></li>
     </ul>
     <span class="footer-copy">© 2025 The Media Ops. All rights reserved.</span>
